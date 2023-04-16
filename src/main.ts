@@ -20,14 +20,14 @@ async function bootstrap() {
     app.use(bodyParser.urlencoded({ limit: "25mb", extended: true }));
     app.useGlobalPipes(new ValidationPipe());
 
-    app.enableCors({
-        origin: corsOrigin,
-    });
+    // app.enableCors({
+    //     origin: corsOrigin,
+    // });
 
     await app.listen(APP_PORT);
 
-    logger.log(`current cors: ${corsOrigin}`);
-    logger.log(`cors origin: ${CORS_ORIGINS}`);
+    // logger.log(`current cors: ${corsOrigin}`);
+    // logger.log(`cors origin: ${CORS_ORIGINS}`);
     logger.log(`application is running on: ${await app.getUrl()}`);
 }
 
