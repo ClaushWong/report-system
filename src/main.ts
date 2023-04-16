@@ -24,11 +24,13 @@ async function bootstrap() {
     //     origin: corsOrigin,
     // });
 
-    await app.listen(APP_PORT, "0.0.0.0");
+    const host = "0.0.0.0";
+    await app.listen(APP_PORT, host);
 
     // logger.log(`current cors: ${corsOrigin}`);
     // logger.log(`cors origin: ${CORS_ORIGINS}`);
     logger.log(`application is running on: ${await app.getUrl()}`);
+    logger.log(`application is running on: ${host}:${APP_PORT}`);
 }
 
 bootstrap();
