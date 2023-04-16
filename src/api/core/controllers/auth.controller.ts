@@ -19,6 +19,13 @@ import { CoreAuthGuard } from "@src/auth/guards";
 export class AuthController {
     constructor(private readonly auth: AuthService) {}
 
+    @Get("test")
+    async test() {
+        return {
+            hi: true,
+        };
+    }
+
     @Post("login")
     async login(@Body() body: PosLogin) {
         const { username, password } = body;
