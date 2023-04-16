@@ -3,7 +3,7 @@ import { AppModule } from "./app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import * as bodyParser from "body-parser";
 import { Logger, ValidationPipe } from "@nestjs/common";
-import { APP_PORT, CORS_ORIGINS, APP_ENVIRONMENT } from "./config";
+import { PORT, CORS_ORIGINS, APP_ENVIRONMENT } from "./config";
 
 const logger = new Logger("bootstrap");
 
@@ -25,12 +25,12 @@ async function bootstrap() {
     // });
 
     const host = "0.0.0.0";
-    await app.listen(APP_PORT, host);
+    await app.listen(PORT, host);
 
     // logger.log(`current cors: ${corsOrigin}`);
     // logger.log(`cors origin: ${CORS_ORIGINS}`);
     logger.log(`application is running on: ${await app.getUrl()}`);
-    logger.log(`application is running on: ${host}:${APP_PORT}`);
+    logger.log(`application is running on: ${host}:${PORT}`);
 }
 
 bootstrap();
