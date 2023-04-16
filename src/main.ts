@@ -24,7 +24,7 @@ async function bootstrap() {
     //     origin: corsOrigin,
     // });
 
-    await app.listen(APP_PORT);
+    await app.listen(APP_PORT, "0.0.0.0");
 
     // logger.log(`current cors: ${corsOrigin}`);
     // logger.log(`cors origin: ${CORS_ORIGINS}`);
