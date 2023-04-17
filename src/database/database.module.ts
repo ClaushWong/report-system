@@ -2,8 +2,12 @@ import { Module } from "@nestjs/common";
 import { DatabaseService } from "./database.service";
 import { MongooseModule } from "@nestjs/mongoose";
 
-import { AdminSchema, CompanySchema } from "./schema";
-import { DataEntrySchema } from "./schema/data-entry.schema";
+import {
+    AdminSchema,
+    CompanySchema,
+    DataEntrySchema,
+    RoleSchema,
+} from "./schema";
 
 @Module({
     imports: [
@@ -12,6 +16,7 @@ import { DataEntrySchema } from "./schema/data-entry.schema";
         MongooseModule.forFeature([
             { name: "DataEntry", schema: DataEntrySchema },
         ]),
+        MongooseModule.forFeature([{ name: "Role", schema: RoleSchema }]),
     ],
     providers: [DatabaseService],
     exports: [DatabaseService],

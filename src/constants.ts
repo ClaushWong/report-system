@@ -25,7 +25,8 @@ export const GENERIC_STATUS = {
     ERROR: "error",
 };
 
-export const IGNORE_FIELD = "-__v -createdBy -updatedBy -deletedBy -createdAt -updatedAt -deletedAt -password";
+export const IGNORE_FIELD =
+    "-__v -createdBy -updatedBy -deletedBy -createdAt -updatedAt -deletedAt -password";
 export const IMAGE_FIELD = "type path url";
 export const TIMEZONE = "timezone";
 
@@ -89,10 +90,8 @@ export const RIDER_TYPE = {
     PICKUPSTATION: "pickupstation",
 };
 export const ADMIN_TYPES = {
-    ADMIN: "admin",
-    PICKUP_STATION: "pickupstation",
-    WAREHOUSE: "warehouse",
-    CAFE: "cafe",
+    OPERATOR: "operator",
+    CLIENT: "client",
 };
 export const ID_TYPE = {
     IC: "ic",

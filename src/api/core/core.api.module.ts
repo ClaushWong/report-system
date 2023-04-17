@@ -7,12 +7,16 @@ import { AuthController } from "./controllers/auth.controller";
 import { CompanyController } from "./controllers/company.controller";
 import { DataEntryController } from "./controllers/data-entry.controller";
 import { DashboardController } from "./controllers/dashboard.controller";
+import { RoleController } from "./controllers/role.controller";
+import { UserController } from "./controllers/user.controller";
 
 const controllers = [
     AuthController,
     CompanyController,
     DataEntryController,
     DashboardController,
+    RoleController,
+    UserController,
 ];
 
 @Module({
