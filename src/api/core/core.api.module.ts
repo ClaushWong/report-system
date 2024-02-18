@@ -9,6 +9,7 @@ import { DataEntryController } from "./controllers/data-entry.controller";
 import { DashboardController } from "./controllers/dashboard.controller";
 import { RoleController } from "./controllers/role.controller";
 import { UserController } from "./controllers/user.controller";
+import { ClientController } from "./controllers/client.controller";
 
 const controllers = [
   AuthController,
@@ -17,6 +18,7 @@ const controllers = [
   DashboardController,
   RoleController,
   UserController,
+  ClientController,
 ];
 
 @Module({
