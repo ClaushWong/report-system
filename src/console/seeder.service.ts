@@ -11,8 +11,8 @@ export class SeederService {
   async data() {
     for (const user of ADMIN) {
       const { username, password, name } = user;
-      if ((await this.database.Admin.countDocuments({ username })) === 0) {
-        const r = new this.database.Admin();
+      if ((await this.database.User.countDocuments({ username })) === 0) {
+        const r = new this.database.User();
         r.username = username;
         r.password = password;
         r.name = name;

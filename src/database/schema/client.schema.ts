@@ -1,13 +1,14 @@
 import * as mongoose from "mongoose";
 import { Type, UserRecord } from "@src/database/template/type.template";
-import { IUserRecord } from "../template/type.interface";
-import { IClient } from "./client.schema";
+import { IUserRecord } from "@src/database/template/type.interface";
+
+import { IUser } from "./user.schema";
 
 const schema = new mongoose.Schema(
   {
     // fields
     name: Type.String,
-    client: Type.ObjectId("Client"),
+    user: Type.ObjectId("User"),
 
     // userRecord
     createdBy: UserRecord,
@@ -22,12 +23,13 @@ const schema = new mongoose.Schema(
   }
 );
 
-export const CompanySchema = schema;
+export const ClientSchema = schema;
 
-export interface ICompany {
-  _id: any;
+export interface IClient {
+  _id: string;
   name: string;
-  client: string | IClient;
+  user: string | IUser;
+
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;

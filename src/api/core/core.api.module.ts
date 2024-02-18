@@ -11,18 +11,18 @@ import { RoleController } from "./controllers/role.controller";
 import { UserController } from "./controllers/user.controller";
 
 const controllers = [
-    AuthController,
-    CompanyController,
-    DataEntryController,
-    DashboardController,
-    RoleController,
-    UserController,
+  AuthController,
+  CompanyController,
+  DataEntryController,
+  DashboardController,
+  RoleController,
+  UserController,
 ];
 
 @Module({
-    imports: [DatabaseModule, AuthModule, SharedModule],
-    controllers,
-    providers: [],
-    exports: [],
+  imports: [DatabaseModule, AuthModule, SharedModule],
+  controllers,
+  providers: [],
+  exports: [],
 })
 export class CoreApiModule {}

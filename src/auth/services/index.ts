@@ -1,10 +1,10 @@
-import { IAdmin } from "../../database/schema";
+import { IUser } from "../../database/schema";
 import * as bcrypt from "bcryptjs";
 
 export interface IAuthRepo {
-  get(id: string): Promise<IAdmin>;
+  get(id: string): Promise<IUser>;
 
-  attempt(credential: Credential | any): Promise<IAdmin>;
+  attempt(credential: Credential | any): Promise<IUser>;
 
   sign(user: any): Promise<string> | string;
 }

@@ -1,40 +1,43 @@
 import * as mongoose from "mongoose";
-import { Schema } from "mongoose";
+import { Type, UserRecord } from "@src/database/template/type.template";
+import { IUserRecord } from "../template/type.interface";
+
 import { ICompany } from "./company.schema";
+import { IClient } from "./client.schema";
 
 const schema = new mongoose.Schema(
-    {
-        company: {
-            type: Schema.Types.ObjectId,
-            ref: "Company",
-            default: null,
-        },
-        date: {
-            type: Schema.Types.Date,
-            default: null,
-        },
-        amount: {
-            type: Schema.Types.Number,
-            default: null,
-        },
-        deletedAt: {
-            type: Schema.Types.Date,
-            default: null,
-        },
-    },
-    {
-        timestamps: true,
-    }
+  {
+    company: Type.ObjectId("Company"),
+    client: Type.ObjectId("Client"),
+    date: Type.Date,
+    amount: Type.Number,
+
+    // userRecord
+    createdBy: UserRecord,
+    updatedBy: UserRecord,
+    deletedBy: UserRecord,
+
+    // addon timestamps
+    deletedAt: Type.Date,
+  },
+  {
+    timestamps: true,
+  }
 );
 
 export const DataEntrySchema = schema;
 
 export interface IDataEntry {
-    _id: any;
-    company: string | ICompany;
-    date: Date;
-    amount: number;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date;
+  _id: any;
+  company: string | ICompany;
+  client: string | IClient;
+  date: Date;
+  amount: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
+
+  createdBy: IUserRecord;
+  updatedBy: IUserRecord;
+  deletedBy: IUserRecord;
 }

@@ -1,47 +1,40 @@
 import * as mongoose from "mongoose";
-import { Schema } from "mongoose";
+import { IUserRecord } from "../template/type.interface";
+import { Type, UserRecord } from "../template/type.template";
 
 const schema = new mongoose.Schema(
-    {
-        name: {
-            type: Schema.Types.String,
-            default: null,
-        },
-        type: {
-            type: Schema.Types.String,
-            default: null,
-        },
-        allowedPages: [
-            {
-                type: Schema.Types.String,
-                default: null,
-            },
-        ],
-        allowedPermissions: [
-            {
-                type: Schema.Types.String,
-                default: null,
-            },
-        ],
-        deletedAt: {
-            type: Schema.Types.Date,
-            default: null,
-        },
-    },
-    {
-        timestamps: true,
-    }
+  {
+    name: Type.String,
+    type: Type.String,
+    allowedPages: [Type.String],
+    allowedPermissions: [Type.String],
+
+    // userRecord
+    createdBy: UserRecord,
+    updatedBy: UserRecord,
+    deletedBy: UserRecord,
+
+    // addon timestamps
+    deletedAt: Type.Date,
+  },
+  {
+    timestamps: true,
+  }
 );
 
 export const RoleSchema = schema;
 
 export interface IRole {
-    _id: any;
-    name: string;
-    type: string;
-    allowedPages: string[];
-    allowedPermissions: string[];
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date;
+  _id: any;
+  name: string;
+  type: string;
+  allowedPages: string[];
+  allowedPermissions: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
+
+  createdBy: IUserRecord;
+  updatedBy: IUserRecord;
+  deletedBy: IUserRecord;
 }

@@ -5,7 +5,7 @@ import { DatabaseModule } from "../database";
 import { HttpModule } from "@nestjs/axios";
 
 @Module({
-  imports: [ScheduleModule.forRoot(), SharedModule, DatabaseModule, HttpModule],
+  imports: [ScheduleModule.forRoot(), DatabaseModule, SharedModule, HttpModule],
   providers: [],
 })
 export class BackgroundModule {}
