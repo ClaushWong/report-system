@@ -1,7 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class CreateDataEntryDTO {
+  // !! only for admin to manual create data for user
+  @IsOptional()
+  @ApiProperty()
+  user: string;
+
+  // standard user fields
   @IsNotEmpty()
   @ApiProperty()
   company: string;

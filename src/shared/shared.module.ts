@@ -3,9 +3,22 @@ import { DatabaseModule } from "@src/database";
 
 import { HttpModule } from "@nestjs/axios";
 import { DashboardService } from "./dashboard.service";
-import { UserService, ClientService, CompanyService } from ".";
+import {
+  UserService,
+  ClientService,
+  CompanyService,
+  DataEntryService,
+  RoleService,
+} from ".";
 
-const modules = [DashboardService, UserService, ClientService, CompanyService];
+const modules = [
+  DashboardService,
+  UserService,
+  ClientService,
+  CompanyService,
+  DataEntryService,
+  RoleService,
+];
 
 @Module({
   imports: [DatabaseModule, HttpModule],

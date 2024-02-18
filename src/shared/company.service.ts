@@ -16,7 +16,7 @@ export class CompanyService {
       deletedAt: { $eq: null },
     };
 
-    if (user?.role?.name !== "admin") {
+    if (user?.role?.name?.toLowerCase() !== "admin") {
       query.user = user._id;
     }
 

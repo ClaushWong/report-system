@@ -3,8 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  InternalServerErrorException,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -13,7 +11,8 @@ import {
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { CoreAuthGuard } from "@src/auth/guards";
-import { DatabaseService } from "@src/database";
+import { User } from "@src/decorations";
+import { RoleService } from "@src/shared";
 import { CreateRoleDTO } from "../dto/role.dto";
 
 @ApiTags("Core: Role")
@@ -21,95 +20,51 @@ import { CreateRoleDTO } from "../dto/role.dto";
 @Controller("/api/core/role")
 @UseGuards(CoreAuthGuard)
 export class RoleController {
-  constructor(private readonly database: DatabaseService) {}
+  constructor(private readonly role: RoleService) {}
 
   @ApiQuery({ name: "offset" })
   @ApiQuery({ name: "limit" })
   @ApiQuery({ name: "name" })
   @ApiQuery({ name: "type" })
   @Get("")
-  async list(@Query() { offset = "0", limit = "0", name, type }) {
-    const query: any = {
-      deletedAt: { $eq: null },
-    };
-
-    if (name) {
-      query.name = { $regex: new RegExp(name, "i") };
+  async list(
+    @Query()
+    rawQuery: {
+      offset: string;
+      limit: string;
+      name?: string;
+      type?: string;
     }
+  ) {
+    const { query, pagination } = await this.role.formatQuery(rawQuery);
 
-    if (type) {
-      query.type = type;
-    }
-
-    const total = await this.database.Role.countDocuments(query);
-    const items = await this.database.Role.find(query)
-      .sort("-createdAt")
-      .skip(parseInt(offset))
-      .limit(parseInt(limit));
-
-    return { total, items };
+    return await this.role.list(query, pagination);
   }
 
   @ApiParam({ name: "id" })
   @Get(":id")
   async get(@Param("id") _id: string) {
-    const res: any = await this.database.Role.findById(_id);
-
-    if (res) {
-      return res;
-    }
-
-    throw new NotFoundException();
+    return await this.role.get(_id);
   }
 
   @Post("")
-  async create(@Body() body: CreateRoleDTO) {
-    try {
-      const role = new this.database.Role();
-
-      Object.assign(role, body);
-
-      await role.save();
-
-      return { success: true };
-    } catch (err) {
-      throw new InternalServerErrorException(err);
-    }
+  async create(@Body() body: CreateRoleDTO, @User() user: any) {
+    return await this.role.create(body, user);
   }
 
   @ApiParam({ name: "id" })
   @Put(":id")
-  async update(@Param("id") _id: string, @Body() body: CreateRoleDTO) {
-    try {
-      const role = await this.database.Role.findById(_id);
-
-      if (!role) {
-        throw new NotFoundException();
-      }
-
-      Object.assign(role, body);
-
-      await role.save();
-
-      return { success: true };
-    } catch (err) {
-      throw new InternalServerErrorException(err);
-    }
+  async update(
+    @Param("id") _id: string,
+    @Body() body: CreateRoleDTO,
+    @User() user: any
+  ) {
+    return await this.role.update(_id, body, user);
   }
 
   @ApiParam({ name: "id" })
   @Delete(":id")
-  async delete(@Param("id") _id: string) {
-    try {
-      const role = await this.database.Role.findById(_id);
-
-      role.deletedAt = new Date();
-
-      await role.save();
-
-      return { success: true };
-    } catch (err) {
-      throw new InternalServerErrorException(err);
-    }
+  async delete(@Param("id") _id: string, @User() user: any) {
+    return await this.role.delete(_id, user);
   }
 }

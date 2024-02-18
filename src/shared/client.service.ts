@@ -7,19 +7,23 @@ export class ClientService {
   constructor(private readonly database: DatabaseService) {}
 
   public async formatQuery(
-    rawQuery: { limit: string; offset: string; name?: string },
+    rawQuery: { limit: string; offset: string; name?: string; type?: string },
     user: any
   ) {
     const query: any = {
       deletedAt: { $eq: null },
     };
 
-    if (user?.role?.name !== "admin") {
+    if (user?.role?.name?.toLowerCase() !== "admin") {
       query.user = user._id;
     }
 
     if (!!rawQuery?.name) {
       query.name = { $regex: new RegExp(rawQuery.name, "i") };
+    }
+
+    if (!!rawQuery?.type) {
+      query.type = { $regex: new RegExp(rawQuery.type, "i") };
     }
 
     const pagination = {

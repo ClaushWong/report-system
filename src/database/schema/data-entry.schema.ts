@@ -4,9 +4,11 @@ import { IUserRecord } from "../template/type.interface";
 
 import { ICompany } from "./company.schema";
 import { IClient } from "./client.schema";
+import { IUser } from ".";
 
 const schema = new mongoose.Schema(
   {
+    user: Type.ObjectId("User"),
     company: Type.ObjectId("Company"),
     client: Type.ObjectId("Client"),
     date: Type.Date,
@@ -29,6 +31,7 @@ export const DataEntrySchema = schema;
 
 export interface IDataEntry {
   _id: any;
+  user: string | IUser;
   company: string | ICompany;
   client: string | IClient;
   date: Date;

@@ -18,6 +18,7 @@ export class UserService {
     const query: any = {
       deletedAt: { $eq: null },
       isSearchable: true,
+      username: { $ne: "admin" },
     };
 
     if (user.type === "operator" && user.role.name.toLowerCase() !== "admin") {
