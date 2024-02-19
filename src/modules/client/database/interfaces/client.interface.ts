@@ -1,10 +1,13 @@
 import { IUserRecord } from "@src/database/template/type.interface";
-import { IUser } from "@src/modules/core/database/interfaces";
+import { IRole, IUser } from "@src/modules/core/database/interfaces";
 
 export interface IClient {
   _id: string;
   name: string;
   user: string | IUser;
+  username: string;
+  password: string;
+  role: string | IRole;
 
   createdAt: Date;
   updatedAt: Date;

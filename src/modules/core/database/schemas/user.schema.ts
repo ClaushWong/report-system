@@ -4,7 +4,7 @@ import { Type, UserRecord } from "@src/database/template/type.template";
 
 const schema = new mongoose.Schema(
   {
-    username: Type.string().unique().required().get(),
+    username: Type.string().required().get(),
     name: Type.String,
     isDisabled: Type.BooleanFalse,
     type: Type.String,

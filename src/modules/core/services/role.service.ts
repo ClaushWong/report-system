@@ -10,12 +10,15 @@ import { CreateRoleDTO } from "../dtos/role.dto";
 export class RoleService {
   constructor(private readonly database: CoreDatabaseService) {}
 
-  public async formatQuery(rawQuery: {
-    limit: string;
-    offset: string;
-    name?: string;
-    type?: string;
-  }) {
+  public async formatQuery(
+    rawQuery: {
+      limit: string;
+      offset: string;
+      name?: string;
+      type?: string;
+    },
+    user: any
+  ) {
     const query: any = {
       deletedAt: { $eq: null },
     };
@@ -26,6 +29,16 @@ export class RoleService {
 
     if (!!rawQuery?.type) {
       query.type = rawQuery.type;
+    }
+
+    if (user?.role?.name !== "admin") {
+      const role = await this.database.Role.findOne({
+        name: "Admin",
+        deletedAt: { $eq: null },
+      });
+      if (role) {
+        query._id = { $ne: role._id };
+      }
     }
 
     const pagination = {

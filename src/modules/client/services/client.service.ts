@@ -1,15 +1,21 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateClientDTO, UpdateClientDTO } from "../dtos/client.dto";
 import { ClientDatabaseService } from "../database";
+import { UserService } from "@src/modules/core/services";
 
 @Injectable()
 export class ClientService {
-  constructor(private readonly database: ClientDatabaseService) {}
+  constructor(
+    private readonly database: ClientDatabaseService,
+    private readonly user: UserService
+  ) {}
 
   public async formatQuery(
-    rawQuery: { limit: string; offset: string; name?: string; type?: string },
+    rawQuery: { limit: string; offset: string; name?: string; user?: string },
     user: any
   ) {
+    let returnEmpty = false;
+
     const query: any = {
       deletedAt: { $eq: null },
     };
@@ -22,8 +28,17 @@ export class ClientService {
       query.name = { $regex: new RegExp(rawQuery.name, "i") };
     }
 
-    if (!!rawQuery?.type) {
-      query.type = { $regex: new RegExp(rawQuery.type, "i") };
+    if (!!rawQuery?.user) {
+      const users = await this.user.rawList({
+        name: { $regex: new RegExp(rawQuery?.user, "i") },
+        deletedAt: { $eq: null },
+      });
+
+      if (users.length == 0) {
+        returnEmpty = true;
+      } else {
+        query.user = { $in: users.map((user: any) => user._id) };
+      }
     }
 
     const pagination = {
@@ -31,7 +46,7 @@ export class ClientService {
       offset: rawQuery?.offset ? parseInt(rawQuery.offset) || 0 : 0,
     };
 
-    return { query, pagination };
+    return { query, pagination, returnEmpty };
   }
 
   async rawList(query: any) {
@@ -42,6 +57,7 @@ export class ClientService {
   async list(query: any, pagination: any) {
     const total = await this.database.Client.countDocuments(query);
     const items = await this.database.Client.find(query)
+      .populate("user", "name")
       .skip(pagination.offset)
       .limit(pagination.limit);
 
@@ -49,6 +65,15 @@ export class ClientService {
   }
 
   async create(body: CreateClientDTO, user: any) {
+    const existingClient = await this.database.Client.findOne({
+      username: body.username,
+      deletedAt: { $eq: null },
+    });
+
+    if (!!existingClient) {
+      throw new Error("Client already exists");
+    }
+
     const newClient = await this.database.Client.create({
       ...body,
       createdBy: {
@@ -58,7 +83,7 @@ export class ClientService {
       },
     });
 
-    if (user?.role?.name !== "admin") {
+    if (user?.role?.name?.toLowerCase() !== "admin") {
       newClient.user = user._id;
     }
 

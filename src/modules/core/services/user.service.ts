@@ -51,6 +51,11 @@ export class UserService {
     return { total, items };
   }
 
+  public async rawList(rawQuery: any) {
+    const items = await this.database.User.find(rawQuery);
+    return items;
+  }
+
   public async get(_id: string) {
     const res: any = await this.database.User.findById(_id);
 

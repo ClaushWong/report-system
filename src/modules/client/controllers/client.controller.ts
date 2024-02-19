@@ -16,12 +16,21 @@ export class ClientController {
   @ApiQuery({ name: "offset", required: true })
   @ApiQuery({ name: "limit", required: true })
   @ApiQuery({ name: "name", required: false })
+  @ApiQuery({ name: "user", required: false })
   @Get()
   async getList(
-    @Query() rawQuery: { offset: string; limit: string; name?: string },
+    @Query()
+    rawQuery: { offset: string; limit: string; name?: string; user?: string },
     @User() user: any
   ) {
-    const { query, pagination } = await this.client.formatQuery(rawQuery, user);
+    const { query, pagination, returnEmpty } = await this.client.formatQuery(
+      rawQuery,
+      user
+    );
+
+    if (returnEmpty) {
+      return { total: 0, items: [] };
+    }
 
     return await this.client.list(query, pagination);
   }

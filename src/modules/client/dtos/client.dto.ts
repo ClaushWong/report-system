@@ -6,6 +6,14 @@ export class CreateClientDTO {
   @ApiProperty()
   name: string;
 
+  @IsNotEmpty()
+  @ApiProperty()
+  username: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  password: string;
+
   @IsOptional()
   @ApiProperty()
   user: string;
@@ -15,6 +23,14 @@ export class UpdateClientDTO {
   @IsNotEmpty()
   @ApiProperty()
   name: string;
+
+  @IsOptional()
+  @ApiProperty()
+  username: string;
+
+  @IsOptional()
+  @ApiProperty()
+  password: string;
 
   @IsOptional()
   @ApiProperty()

@@ -34,9 +34,10 @@ export class RoleController {
       limit: string;
       name?: string;
       type?: string;
-    }
+    },
+    @User() user: any
   ) {
-    const { query, pagination } = await this.role.formatQuery(rawQuery);
+    const { query, pagination } = await this.role.formatQuery(rawQuery, user);
 
     return await this.role.list(query, pagination);
   }
