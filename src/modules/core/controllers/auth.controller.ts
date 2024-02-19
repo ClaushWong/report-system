@@ -11,7 +11,7 @@ import {
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { AuthService } from "@src/auth";
-import { LoginDTO, UpdateProfileDTO } from "../dto/auth.dto";
+import { LoginDTO, UpdateProfileDTO } from "../dtos/auth.dto";
 import { User } from "@src/decorations";
 import { CoreAuthGuard } from "@src/auth/guards";
 import { UserService } from "@src/shared";
@@ -46,7 +46,7 @@ export class AuthController {
 
   @Get("profile")
   @UseGuards(CoreAuthGuard)
-  async profile(@User() user) {
+  async profile(@User() user: any) {
     const res = await this.auth.core.get(user._id);
     if (res) {
       return res;
@@ -62,10 +62,10 @@ export class AuthController {
 
   @ApiBearerAuth()
   @Get("logout")
-  async logout(@Request() request) {
+  async logout(@Request() request: any) {
     const authorization = request.headers?.["authorization"];
     if (authorization) {
-      const token = authorization.replace("Bearer ", "");
+      authorization.replace("Bearer ", "");
     }
     return { success: true };
   }

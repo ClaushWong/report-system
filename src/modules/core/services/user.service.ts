@@ -3,13 +3,13 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from "@nestjs/common";
-import { DatabaseService } from "@src/database";
-import { CreateUserDTO, UpdateUserDTO } from "@src/api/core/dto/user.dto";
-import { UpdateProfileDTO } from "@src/api/core/dto/auth.dto";
+import { CoreDatabaseService } from "../database";
+import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto";
+import { UpdateProfileDTO } from "../dtos/auth.dto";
 
 @Injectable()
 export class UserService {
-  constructor(private readonly database: DatabaseService) {}
+  constructor(private readonly database: CoreDatabaseService) {}
 
   public async formatQuery(
     rawQuery: { offset: string; limit: string; type?: string; name?: string },

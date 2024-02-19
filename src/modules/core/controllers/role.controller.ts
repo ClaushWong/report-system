@@ -13,7 +13,7 @@ import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { CoreAuthGuard } from "@src/auth/guards";
 import { User } from "@src/decorations";
 import { RoleService } from "@src/shared";
-import { CreateRoleDTO } from "../dto/role.dto";
+import { CreateRoleDTO } from "../dtos/role.dto";
 
 @ApiTags("Core: Role")
 @ApiBearerAuth()

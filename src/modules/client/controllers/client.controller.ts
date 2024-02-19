@@ -4,7 +4,7 @@ import { CoreAuthGuard } from "@src/auth/guards";
 import { ClientService } from "@src/shared";
 import { User } from "@src/decorations";
 import { Query, Get, Post, Put, Body, Param } from "@nestjs/common";
-import { CreateClientDTO, UpdateClientDTO } from "../dto/client.dto";
+import { CreateClientDTO, UpdateClientDTO } from "../dtos/client.dto";
 
 @ApiTags("Core: Client")
 @Controller("/api/core/clients")

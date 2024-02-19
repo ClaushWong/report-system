@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { CreateClientDTO, UpdateClientDTO } from "@src/api/core/dto/client.dto";
-import { DatabaseService } from "@src/database";
+import { CreateClientDTO, UpdateClientDTO } from "../dtos/client.dto";
+import { ClientDatabaseService } from "../database";
 
 @Injectable()
 export class ClientService {
-  constructor(private readonly database: DatabaseService) {}
+  constructor(private readonly database: ClientDatabaseService) {}
 
   public async formatQuery(
     rawQuery: { limit: string; offset: string; name?: string; type?: string },

@@ -3,12 +3,12 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from "@nestjs/common";
-import { DatabaseService } from "@src/database";
-import { CreateRoleDTO } from "@src/api/core/dto/role.dto";
+import { CoreDatabaseService } from "../database";
+import { CreateRoleDTO } from "../dtos/role.dto";
 
 @Injectable()
 export class RoleService {
-  constructor(private readonly database: DatabaseService) {}
+  constructor(private readonly database: CoreDatabaseService) {}
 
   public async formatQuery(rawQuery: {
     limit: string;

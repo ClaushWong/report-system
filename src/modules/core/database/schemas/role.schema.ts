@@ -1,6 +1,5 @@
 import * as mongoose from "mongoose";
-import { IUserRecord } from "../template/type.interface";
-import { Type, UserRecord } from "../template/type.template";
+import { Type, UserRecord } from "@src/database/template/type.template";
 
 const schema = new mongoose.Schema(
   {
@@ -23,18 +22,3 @@ const schema = new mongoose.Schema(
 );
 
 export const RoleSchema = schema;
-
-export interface IRole {
-  _id: any;
-  name: string;
-  type: string;
-  allowedPages: string[];
-  allowedPermissions: string[];
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date;
-
-  createdBy: IUserRecord;
-  updatedBy: IUserRecord;
-  deletedBy: IUserRecord;
-}
