@@ -1,8 +1,14 @@
 import { Module } from "@nestjs/common";
 import { MONGO_URI } from "./config";
 import { MongooseCoreModule } from "@nestjs/mongoose/dist/mongoose-core.module";
-import { ApiModule } from "./api";
 import { BackgroundModule } from "./background";
+
+import {
+  CoreApiModule,
+  ClientApiModule,
+  ProfileApiModule,
+  TransactionApiModule,
+} from "./modules";
 
 @Module({
   imports: [
@@ -11,7 +17,10 @@ import { BackgroundModule } from "./background";
       useFindAndModify: false,
       autoIndex: false,
     }),
-    ApiModule,
+    CoreApiModule,
+    ClientApiModule,
+    ProfileApiModule,
+    TransactionApiModule,
     BackgroundModule,
   ],
 })

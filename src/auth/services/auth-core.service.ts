@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { DatabaseService } from "@src/database";
+import { CoreDatabaseService } from "@src/modules/core/database";
+import { IUser } from "@src/modules/core/database/interfaces";
 import { CoreCredential, IAuthRepo } from "./index";
-import { IUser } from "@src/database/schema";
 import * as bcrypt from "bcryptjs";
 
 import * as jwt from "jsonwebtoken";
@@ -11,7 +11,7 @@ import { IGNORE_FIELD } from "@src/constants";
 
 @Injectable()
 export class AuthCoreService implements IAuthRepo {
-  constructor(private readonly database: DatabaseService) {}
+  constructor(private readonly database: CoreDatabaseService) {}
 
   async get(id: string): Promise<IUser> {
     return await this.database.User.findOne({

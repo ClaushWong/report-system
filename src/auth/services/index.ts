@@ -1,4 +1,4 @@
-import { IUser } from "../../database/schema";
+import { IUser } from "@src/modules/core/database/interfaces";
 import * as bcrypt from "bcryptjs";
 
 export interface IAuthRepo {

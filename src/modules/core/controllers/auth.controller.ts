@@ -14,7 +14,7 @@ import { AuthService } from "@src/auth";
 import { LoginDTO, UpdateProfileDTO } from "../dtos/auth.dto";
 import { User } from "@src/decorations";
 import { CoreAuthGuard } from "@src/auth/guards";
-import { UserService } from "@src/shared";
+import { UserService } from "@src/modules/core/services";
 
 @ApiTags("Core: Auth")
 @Controller("/api/core/auth")

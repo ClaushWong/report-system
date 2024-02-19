@@ -1,12 +1,12 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { ADMIN } from "./data/seed";
-import { DatabaseService } from "../database";
+import { CoreDatabaseService } from "@src/modules/core/database";
 
 @Injectable()
 export class SeederService {
   logger = new Logger("SEEDER");
 
-  constructor(private database: DatabaseService) {}
+  constructor(private database: CoreDatabaseService) {}
 
   async data() {
     for (const user of ADMIN) {

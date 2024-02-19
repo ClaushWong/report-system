@@ -1,8 +1,7 @@
 import { Module } from "@nestjs/common";
 
-import { DatabaseModule } from "../database/database.module";
+import { CoreDatabaseModule } from "@src/modules/core";
 
-import { SharedModule } from "../shared/shared.module";
 import { MongooseCoreModule } from "@nestjs/mongoose/dist/mongoose-core.module";
 import { MONGO_URI } from "../config";
 import { SeederService } from "./seeder.service";
@@ -12,8 +11,7 @@ import { SeederService } from "./seeder.service";
     MongooseCoreModule.forRoot(MONGO_URI, {
       useCreateIndex: true,
     }),
-    DatabaseModule,
-    SharedModule,
+    CoreDatabaseModule,
   ],
   providers: [SeederService],
 })

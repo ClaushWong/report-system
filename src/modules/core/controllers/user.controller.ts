@@ -14,7 +14,7 @@ import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { User } from "@src/decorations";
 import { CoreAuthGuard } from "@src/auth/guards";
 import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto";
-import { UserService } from "@src/shared";
+import { UserService } from "../services";
 
 @ApiTags("Core: User")
 @ApiBearerAuth()

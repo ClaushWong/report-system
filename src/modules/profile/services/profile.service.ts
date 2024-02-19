@@ -1,15 +1,21 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { CreateClientDTO, UpdateClientDTO } from "../dtos/client.dto";
-import { ClientDatabaseService } from "../database";
+import { CreateProfileDTO } from "../dtos/profile.dto";
+import { ClientService } from "@src/modules/client/services";
+import { ProfileDatabaseService } from "../database";
 
 @Injectable()
-export class ClientService {
-  constructor(private readonly database: ClientDatabaseService) {}
+export class ProfileService {
+  constructor(
+    private readonly database: ProfileDatabaseService,
+    private readonly client: ClientService
+  ) {}
 
   public async formatQuery(
-    rawQuery: { limit: string; offset: string; name?: string; type?: string },
+    rawQuery: { limit: string; offset: string; name?: string; client?: string },
     user: any
   ) {
+    let returnEmpty = false;
+
     const query: any = {
       deletedAt: { $eq: null },
     };
@@ -22,8 +28,17 @@ export class ClientService {
       query.name = { $regex: new RegExp(rawQuery.name, "i") };
     }
 
-    if (!!rawQuery?.type) {
-      query.type = { $regex: new RegExp(rawQuery.type, "i") };
+    if (!!rawQuery?.client) {
+      const clients = await this.client.rawList({
+        name: { $regex: new RegExp(rawQuery.client, "i") },
+        deletedAt: { $eq: null },
+      });
+
+      if (clients.length > 0) {
+        query.client = { $in: clients.map((client) => client._id) };
+      } else {
+        returnEmpty = true;
+      }
     }
 
     const pagination = {
@@ -31,25 +46,25 @@ export class ClientService {
       offset: rawQuery?.offset ? parseInt(rawQuery.offset) || 0 : 0,
     };
 
-    return { query, pagination };
-  }
-
-  async rawList(query: any) {
-    const items = await this.database.Client.find(query);
-    return items;
+    return { query, pagination, returnEmpty };
   }
 
   async list(query: any, pagination: any) {
-    const total = await this.database.Client.countDocuments(query);
-    const items = await this.database.Client.find(query)
+    const total = await this.database.Profile.countDocuments(query);
+    const items = await this.database.Profile.find(query)
       .skip(pagination.offset)
       .limit(pagination.limit);
 
     return { total, items };
   }
 
-  async create(body: CreateClientDTO, user: any) {
-    const newClient = await this.database.Client.create({
+  async rawList(query: any) {
+    const items = await this.database.Profile.find(query);
+    return items;
+  }
+
+  async create(body: CreateProfileDTO, user: any) {
+    const newClient = await this.database.Profile.create({
       ...body,
       createdBy: {
         userId: user._id,
@@ -68,7 +83,7 @@ export class ClientService {
   }
 
   async get(_id: string) {
-    const res = await this.database.Client.findOne({
+    const res = await this.database.Profile.findOne({
       _id,
       deletedAt: { $eq: null },
     });
@@ -80,8 +95,8 @@ export class ClientService {
     return res;
   }
 
-  async update(_id: string, body: UpdateClientDTO, user: any) {
-    const res = await this.database.Client.findOne({
+  async update(_id: string, body: CreateProfileDTO, user: any) {
+    const res = await this.database.Profile.findOne({
       _id,
       deletedAt: { $eq: null },
     });
@@ -104,7 +119,7 @@ export class ClientService {
   }
 
   async delete(_id: string, user: any) {
-    const res = await this.database.Client.findOne({
+    const res = await this.database.Profile.findOne({
       _id,
       deletedAt: { $eq: null },
     });
@@ -122,5 +137,15 @@ export class ClientService {
 
     await res.save();
     return { success: true };
+  }
+
+  // get the total amount of profiles created
+  async getTotal(rawQuery: any) {
+    const total = await this.database.Profile.countDocuments({
+      deletedAt: { $eq: null },
+      ...rawQuery,
+    });
+
+    return { total };
   }
 }
