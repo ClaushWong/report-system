@@ -10,7 +10,7 @@ export class CreateTransactionDTO {
   // standard user fields
   @IsNotEmpty()
   @ApiProperty()
-  company: string;
+  category: string;
 
   @IsNotEmpty()
   @ApiProperty()
@@ -22,5 +22,19 @@ export class CreateTransactionDTO {
 
   @IsNotEmpty()
   @ApiProperty()
-  amount: string;
+  amount: number;
+}
+
+export class PublicTransactionCreateDTO {
+  @IsNotEmpty()
+  @ApiProperty()
+  client: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  category: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  amount: number;
 }

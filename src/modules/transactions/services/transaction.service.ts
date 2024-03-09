@@ -2,21 +2,21 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { TransactionDatabaseService } from "../database";
 import * as moment from "moment";
 import * as exceljs from "exceljs";
-import { CreateTransactionDTO } from "../dtos/transaction.dto";
-import { ProfileService } from "@src/modules/profile/services";
+import {
+  CreateTransactionDTO,
+  PublicTransactionCreateDTO,
+} from "../dtos/transaction.dto";
+import { MongoDateRange, MongoRegex } from "@src/lib/mongo";
 
 @Injectable()
 export class TransactionService {
-  constructor(
-    private readonly database: TransactionDatabaseService,
-    private readonly profile: ProfileService
-  ) {}
+  constructor(private readonly database: TransactionDatabaseService) {}
 
   public async formatQuery(
     rawQuery: {
       limit: string;
       offset: string;
-      company?: string;
+      category?: string;
       dateRange?: string;
     },
     user: any
@@ -31,25 +31,12 @@ export class TransactionService {
       query.user = user._id;
     }
 
-    if (!!rawQuery.company) {
-      const companies = await this.profile.rawList({
-        name: { $regex: new RegExp(rawQuery.company, "i") },
-        deletedAt: { $eq: null },
-      });
-
-      if (companies.length > 0) {
-        query.company = { $in: companies.map((c) => c._id) };
-      } else {
-        returnEmpty = true;
-      }
+    if (!!rawQuery.category) {
+      query.category = MongoRegex(rawQuery.category);
     }
 
     if (!!rawQuery.dateRange) {
-      const dates = rawQuery.dateRange.split(",");
-      query.date = {
-        $gte: moment(dates[0]).startOf("day").toDate(),
-        $lte: moment(dates[1]).endOf("day").toDate(),
-      };
+      query.date = MongoDateRange(rawQuery.dateRange);
     }
 
     const pagination = {
@@ -63,7 +50,6 @@ export class TransactionService {
   public async list(query: any, pagination: any) {
     const total = await this.database.Transaction.countDocuments(query);
     const items = await this.database.Transaction.find(query)
-      .populate("company", "name")
       .populate("client", "name")
       .sort("-date")
       .skip(pagination.offset)
@@ -73,7 +59,7 @@ export class TransactionService {
   }
 
   public async exportExcel(
-    rawQuery: { company?: string; dateRange?: string },
+    rawQuery: { category?: string; dateRange?: string },
     user: any,
     res: any
   ) {
@@ -90,13 +76,13 @@ export class TransactionService {
 
     const workbook = new exceljs.Workbook();
     const worksheet = workbook.addWorksheet("data");
-    worksheet.addRow(["Issued Date", "Client", "Company", "Amount (RM)"]);
+    worksheet.addRow(["Issued Date", "Category", "Client", "Amount (RM)"]);
 
     for (const r of items) {
       worksheet.addRow([
         moment(r.date).format("DD MMM YYYY"),
+        r.category,
         typeof r.client === "string" ? r.client : r.client.name,
-        typeof r.company === "string" ? r.company : r.company.name,
         r.amount.toFixed(2),
       ]);
     }
@@ -137,6 +123,8 @@ export class TransactionService {
     await transaction.save();
     return { success: true };
   }
+
+  public async publicCreate(body: PublicTransactionCreateDTO) {}
 
   public async get(_id: string) {
     const transaction = await this.database.Transaction.findOne({

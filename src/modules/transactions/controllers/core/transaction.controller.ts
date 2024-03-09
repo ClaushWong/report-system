@@ -11,10 +11,10 @@ import {
   Res,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
-import { CreateTransactionDTO } from "../dtos/transaction.dto";
+import { CreateTransactionDTO } from "../../dtos/transaction.dto";
 import { CoreAuthGuard } from "@src/auth/guards";
 import { User } from "@src/decorations";
-import { TransactionService } from "../services";
+import { TransactionService } from "../../services";
 
 @ApiTags("Core: Transaction")
 @Controller("/api/core/transactions")
@@ -31,7 +31,6 @@ export class TransactionController {
   async list(
     @Query()
     rawQuery: {
-      company?: string;
       dateRange?: string;
       limit: string;
       offset: string;
@@ -49,10 +48,10 @@ export class TransactionController {
   }
 
   @Get("xls")
-  @ApiQuery({ name: "company" })
+  @ApiQuery({ name: "category" })
   @ApiQuery({ name: "dateRange" })
   async exportExcel(
-    @Query() rawQuery: { company?: string; dateRange?: string },
+    @Query() rawQuery: { category?: string; dateRange?: string },
     @User() user: any,
     @Res() res: any
   ) {

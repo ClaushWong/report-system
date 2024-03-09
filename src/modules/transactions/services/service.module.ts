@@ -3,12 +3,11 @@ import { TransactionDatabaseModule } from "../database";
 
 import { HttpModule } from "@nestjs/axios";
 import { TransactionService } from ".";
-import { ProfileServiceModule } from "@src/modules/profile";
 
 const modules = [TransactionService];
 
 @Module({
-  imports: [TransactionDatabaseModule, ProfileServiceModule, HttpModule],
+  imports: [TransactionDatabaseModule, HttpModule],
   providers: modules,
   exports: modules,
 })

@@ -3,9 +3,9 @@ import { AuthModule } from "@src/auth";
 import { TransactionDatabaseModule } from "./database";
 import { TransactionServiceModule } from "./services";
 
-import { TransactionController } from "./controllers";
+import { CoreTransactionController } from "./controllers";
 
-const controllers = [TransactionController];
+const controllers = [CoreTransactionController];
 
 @Module({
   imports: [TransactionDatabaseModule, AuthModule, TransactionServiceModule],

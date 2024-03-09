@@ -8,6 +8,7 @@ export interface IClient {
   username: string;
   password: string;
   role: string | IRole;
+  canCallPublicApi: boolean;
 
   createdAt: Date;
   updatedAt: Date;

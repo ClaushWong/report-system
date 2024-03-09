@@ -1,3 +1,3 @@
-export { ApiModule as TransactionApiModule } from "./api.module";
+export { ApiModule as CoreTransactionApiModule } from "./core.api.module";
 
 export { TransactionServiceModule } from "./services";

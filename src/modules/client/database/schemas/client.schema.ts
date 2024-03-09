@@ -13,6 +13,8 @@ const schema = new mongoose.Schema(
     role: Type.ObjectId("Role"),
     isDisabled: Type.BooleanFalse,
 
+    canCallPublicApi: Type.BooleanFalse,
+
     // userRecord
     createdBy: UserRecord,
     updatedBy: UserRecord,

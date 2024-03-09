@@ -1,5 +1,4 @@
 import { IUser } from "@src/modules/core/database/interfaces";
-import { IProfile } from "@src/modules/profile/database/interfaces";
 import { IClient } from "@src/modules/client/database/interfaces";
 
 import { IUserRecord } from "@src/database/template/type.interface";
@@ -7,8 +6,8 @@ import { IUserRecord } from "@src/database/template/type.interface";
 export interface ITransaction {
   _id: any;
   user: string | IUser;
-  company: string | IProfile;
   client: string | IClient;
+  category: string;
   date: Date;
   amount: number;
   createdAt: Date;

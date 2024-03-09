@@ -4,9 +4,9 @@ import { Type, UserRecord } from "@src/database/template/type.template";
 const schema = new mongoose.Schema(
   {
     user: Type.ObjectId("User"),
-    company: Type.ObjectId("Company"),
     client: Type.ObjectId("Client"),
     date: Type.Date,
+    category: Type.String,
     amount: Type.Number,
 
     // userRecord

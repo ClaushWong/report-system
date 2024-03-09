@@ -6,8 +6,7 @@ import { BackgroundModule } from "./background";
 import {
   CoreApiModule,
   ClientApiModule,
-  ProfileApiModule,
-  TransactionApiModule,
+  CoreTransactionApiModule,
 } from "./modules";
 
 @Module({
@@ -19,8 +18,7 @@ import {
     }),
     CoreApiModule,
     ClientApiModule,
-    ProfileApiModule,
-    TransactionApiModule,
+    CoreTransactionApiModule,
     BackgroundModule,
   ],
 })
