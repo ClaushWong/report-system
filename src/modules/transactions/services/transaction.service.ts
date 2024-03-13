@@ -7,10 +7,14 @@ import {
   PublicTransactionCreateDTO,
 } from "../dtos/transaction.dto";
 import { MongoDateRange, MongoRegex } from "@src/lib/mongo";
+import { ClientService } from "@src/modules/client/services";
 
 @Injectable()
 export class TransactionService {
-  constructor(private readonly database: TransactionDatabaseService) {}
+  constructor(
+    private readonly database: TransactionDatabaseService,
+    private readonly client: ClientService
+  ) {}
 
   public async formatQuery(
     rawQuery: {
@@ -124,7 +128,27 @@ export class TransactionService {
     return { success: true };
   }
 
-  public async publicCreate(body: PublicTransactionCreateDTO) {}
+  public async publicCreate(body: PublicTransactionCreateDTO) {
+    const client = await this.client.getByName(body.client);
+    if (!client) {
+      throw new NotFoundException("Client not found");
+    }
+
+    if (!client.canCallPublicApi) {
+      throw new NotFoundException("Client not allowed to call public API");
+    }
+
+    const transaction = new this.database.Transaction();
+    Object.assign(transaction, {
+      ...body,
+      date: new Date(), // record current datetime
+      client: client._id,
+      user: client.user, // declared as it is because it had been given the approval to call public api
+    });
+
+    await transaction.save();
+    return { success: true };
+  }
 
   public async get(_id: string) {
     const transaction = await this.database.Transaction.findOne({
@@ -150,7 +174,7 @@ export class TransactionService {
     Object.assign(transaction, {
       ...body,
       date: new Date(body.date),
-      updatedAt: {
+      updatedBy: {
         userId: user._id,
         name: user.name,
         type: user.type,

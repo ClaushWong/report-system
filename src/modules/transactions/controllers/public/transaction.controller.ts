@@ -6,8 +6,10 @@ import { TransactionService } from "../../services";
 @ApiTags("Core: Transaction")
 @Controller("/api/public/transactions")
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) {}
+  constructor(private readonly transaction: TransactionService) {}
 
   @Post("")
-  async createTramsaction(@Body() body: PublicTransactionCreateDTO) {}
+  async createTramsaction(@Body() body: PublicTransactionCreateDTO) {
+    return await this.transaction.publicCreate(body);
+  }
 }

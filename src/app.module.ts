@@ -7,6 +7,7 @@ import {
   CoreApiModule,
   ClientApiModule,
   CoreTransactionApiModule,
+  PublicTransactionApiModule,
 } from "./modules";
 
 @Module({
@@ -19,6 +20,7 @@ import {
     CoreApiModule,
     ClientApiModule,
     CoreTransactionApiModule,
+    PublicTransactionApiModule,
     BackgroundModule,
   ],
 })

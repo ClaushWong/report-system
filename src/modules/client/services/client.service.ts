@@ -105,6 +105,19 @@ export class ClientService {
     return res;
   }
 
+  async getByName(name: string) {
+    const res = await this.database.Client.findOne({
+      name,
+      deletedAt: { $eq: null },
+    });
+
+    if (!res) {
+      throw new NotFoundException();
+    }
+
+    return res;
+  }
+
   async update(_id: string, body: UpdateClientDTO, user: any) {
     const res = await this.database.Client.findOne({
       _id,
