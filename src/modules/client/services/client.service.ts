@@ -54,6 +54,10 @@ export class ClientService {
     return items;
   }
 
+  async rawCount(query: any) {
+    return await this.database.Client.countDocuments(query);
+  }
+
   async list(query: any, pagination: any) {
     const total = await this.database.Client.countDocuments(query);
     const items = await this.database.Client.find(query)

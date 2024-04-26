@@ -26,7 +26,6 @@ export class TransactionController {
   @Get("")
   @ApiQuery({ name: "limit" })
   @ApiQuery({ name: "offset" })
-  @ApiQuery({ name: "company" })
   @ApiQuery({ name: "dateRange" })
   async list(
     @Query()
@@ -48,10 +47,9 @@ export class TransactionController {
   }
 
   @Get("xls")
-  @ApiQuery({ name: "category" })
   @ApiQuery({ name: "dateRange" })
   async exportExcel(
-    @Query() rawQuery: { category?: string; dateRange?: string },
+    @Query() rawQuery: { dateRange?: string },
     @User() user: any,
     @Res() res: any
   ) {

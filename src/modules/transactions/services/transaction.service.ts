@@ -205,12 +205,70 @@ export class TransactionService {
   }
 
   // get total amount of transactions
-  async getTotal(rawQuery: any) {
+  public async getTotal(rawQuery: any) {
     const total = await this.database.Transaction.countDocuments({
       deletedAt: { $eq: null },
       ...rawQuery,
     });
 
     return { total };
+  }
+
+  // get total value of transactions
+  public async getTotalValue(rawQuery: any) {
+    const total = await this.database.Transaction.aggregate([
+      {
+        $match: {
+          deletedAt: { $eq: null },
+          ...rawQuery,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$amount" },
+        },
+      },
+    ]);
+
+    return total[0]?.total || 0;
+  }
+
+  // get grouped client vs total amount
+  public async getClientVsTotalAmount(rawQuery: any) {
+    const total = await this.database.Transaction.aggregate([
+      {
+        $match: {
+          deletedAt: { $eq: null },
+          ...rawQuery,
+        },
+      },
+      {
+        $group: {
+          _id: "$client",
+          total: { $sum: "$amount" },
+        },
+      },
+      {
+        $lookup: {
+          from: "clients",
+          localField: "_id",
+          foreignField: "_id",
+          as: "client",
+        },
+      },
+      {
+        $unwind: "$client",
+      },
+      {
+        $project: {
+          _id: 0,
+          label: "$client.name",
+          value: "$total",
+        },
+      },
+    ]);
+
+    return total;
   }
 }

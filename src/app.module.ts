@@ -9,6 +9,7 @@ import {
   CoreTransactionApiModule,
   PublicTransactionApiModule,
 } from "./modules";
+import { DashboardApiModule } from "./modules/dashboard";
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import {
     ClientApiModule,
     CoreTransactionApiModule,
     PublicTransactionApiModule,
+    DashboardApiModule,
     BackgroundModule,
   ],
 })
