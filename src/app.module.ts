@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { MONGO_URI } from "./config";
+import { MONGO_URL } from "./config";
 import { MongooseCoreModule } from "@nestjs/mongoose/dist/mongoose-core.module";
 import { BackgroundModule } from "./background";
 
@@ -13,7 +13,7 @@ import { DashboardApiModule } from "./modules/dashboard";
 
 @Module({
   imports: [
-    MongooseCoreModule.forRoot(MONGO_URI, {
+    MongooseCoreModule.forRoot(MONGO_URL, {
       useCreateIndex: true,
       useFindAndModify: false,
       autoIndex: false,
