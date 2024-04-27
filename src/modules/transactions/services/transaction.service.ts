@@ -36,7 +36,7 @@ export class TransactionService {
     }
 
     if (!!rawQuery.remarks) {
-      query.category = MongoRegex(rawQuery.remarks);
+      query.remarks = MongoRegex(rawQuery.remarks);
     }
 
     if (!!rawQuery.dateRange) {
