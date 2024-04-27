@@ -20,6 +20,10 @@ export class CreateTransactionDTO {
   @ApiProperty()
   date: string;
 
+  @IsOptional()
+  @ApiProperty()
+  remarks: string;
+
   @IsNotEmpty()
   @ApiProperty()
   amount: number;

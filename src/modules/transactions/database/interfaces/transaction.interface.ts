@@ -10,6 +10,7 @@ export interface ITransaction {
   category: string;
   date: Date;
   amount: number;
+  remarks: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;

@@ -7,6 +7,7 @@ const schema = new mongoose.Schema(
     client: Type.ObjectId("Client"),
     date: Type.Date,
     category: Type.String,
+    remarks: Type.String,
     amount: Type.Number,
 
     // userRecord
