@@ -20,7 +20,7 @@ export class TransactionService {
     rawQuery: {
       limit: string;
       offset: string;
-      category?: string;
+      remarks?: string;
       dateRange?: string;
     },
     user: any
@@ -35,8 +35,8 @@ export class TransactionService {
       query.user = user._id;
     }
 
-    if (!!rawQuery.category) {
-      query.category = MongoRegex(rawQuery.category);
+    if (!!rawQuery.remarks) {
+      query.category = MongoRegex(rawQuery.remarks);
     }
 
     if (!!rawQuery.dateRange) {
@@ -63,7 +63,7 @@ export class TransactionService {
   }
 
   public async exportExcel(
-    rawQuery: { category?: string; dateRange?: string },
+    rawQuery: { remarks?: string; dateRange?: string },
     user: any,
     res: any
   ) {
@@ -80,13 +80,20 @@ export class TransactionService {
 
     const workbook = new exceljs.Workbook();
     const worksheet = workbook.addWorksheet("data");
-    worksheet.addRow(["Issued Date", "Category", "Client", "Amount (RM)"]);
+    worksheet.addRow([
+      "Issued Date",
+      "Client",
+      "Category",
+      "Remarks",
+      "Amount (RM)",
+    ]);
 
     for (const r of items) {
       worksheet.addRow([
         moment(r.date).format("DD MMM YYYY"),
-        r.category,
         typeof r.client === "string" ? r.client : r.client.name,
+        r.category,
+        r.remarks,
         r.amount.toFixed(2),
       ]);
     }
