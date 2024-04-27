@@ -35,12 +35,15 @@ export class DashboardController {
     const total_amount = await this.transaction.getTotalValue(aggregateQuery);
     const client_vs_total_amount =
       await this.transaction.getClientVsTotalAmount(aggregateQuery);
+    const category_vs_total_amount =
+      await this.transaction.getCategoryVsTotalAmount(aggregateQuery);
 
     return {
       total_clients,
       total_transactions,
       total_amount,
       client_vs_total_amount,
+      category_vs_total_amount,
     };
   }
 }

@@ -278,4 +278,31 @@ export class TransactionService {
 
     return total;
   }
+
+  // get grouped category vs total amount
+  public async getCategoryVsTotalAmount(rawQuery: any) {
+    const total = await this.database.Transaction.aggregate([
+      {
+        $match: {
+          deletedAt: { $eq: null },
+          ...rawQuery,
+        },
+      },
+      {
+        $group: {
+          _id: "$category",
+          total: { $sum: "$amount" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          label: "$_id",
+          value: "$total",
+        },
+      },
+    ]);
+
+    return total;
+  }
 }
